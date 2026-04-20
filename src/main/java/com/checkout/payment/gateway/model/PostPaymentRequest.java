@@ -5,22 +5,35 @@ import java.io.Serializable;
 
 public class PostPaymentRequest implements Serializable {
 
-  @JsonProperty("card_number_last_four")
-  private int cardNumberLastFour;
+  @JsonProperty("card_number")
+  private String cardNumber;
   @JsonProperty("expiry_month")
   private int expiryMonth;
   @JsonProperty("expiry_year")
   private int expiryYear;
   private String currency;
   private int amount;
-  private int cvv;
+  private String cvv;
 
-  public int getCardNumberLastFour() {
-    return cardNumberLastFour;
+  public PostPaymentRequest(String cardNumber, int expiryMonth, int expiryYear, String currency,
+      int amount, String cvv) {
+    this.cardNumber = cardNumber;
+    this.expiryMonth = expiryMonth;
+    this.expiryYear = expiryYear;
+    this.currency = currency;
+    this.amount = amount;
+    this.cvv = cvv;
   }
 
-  public void setCardNumberLastFour(int cardNumberLastFour) {
-    this.cardNumberLastFour = cardNumberLastFour;
+  public PostPaymentRequest() {
+  }
+
+  public String getCardNumber() {
+    return cardNumber;
+  }
+
+  public void setCardNumber(String cardNumber) {
+    this.cardNumber = cardNumber;
   }
 
   public int getExpiryMonth() {
@@ -55,11 +68,11 @@ public class PostPaymentRequest implements Serializable {
     this.amount = amount;
   }
 
-  public int getCvv() {
+  public String getCvv() {
     return cvv;
   }
 
-  public void setCvv(int cvv) {
+  public void setCvv(String cvv) {
     this.cvv = cvv;
   }
 
@@ -70,13 +83,15 @@ public class PostPaymentRequest implements Serializable {
 
   @Override
   public String toString() {
+    String maskedCardNumber = (cardNumber != null && cardNumber.length() >= 4)
+        ? "*".repeat(cardNumber.length() - 4) + cardNumber.substring(cardNumber.length() - 4)
+        : "****";
     return "PostPaymentRequest{" +
-        "cardNumberLastFour=" + cardNumberLastFour +
+        "cardNumber=" + maskedCardNumber +
         ", expiryMonth=" + expiryMonth +
         ", expiryYear=" + expiryYear +
         ", currency='" + currency + '\'' +
         ", amount=" + amount +
-        ", cvv=" + cvv +
         '}';
   }
 }
